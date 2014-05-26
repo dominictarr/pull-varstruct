@@ -5,25 +5,20 @@ exports.decode = function (codec) {
 
   function parse (cb) {
     var val
-
-    console.log('NEXT', ended, buffer && buffer.length, offset)
     if(!buffer || offset >= buffer.length)
       return false
 
     try {
       val = codec.decode(buffer, offset)
       offset += codec.decode.bytesRead
-      console.log('parsed?', val, offset)
       if(offset >= buffer.length) {
         buffer = null
         offset = 0
       }
     } catch (err) {
-      console.log('read more', err)
       if(ended) return cb(err)
       return false
     }
-    console.log('parsed:', val)
     cb(null, val)
     return true
   }
@@ -35,10 +30,8 @@ exports.decode = function (codec) {
       if(ended) return cb(ended)
 
       read(null, function next (end, data) {
-        console.log('next', end, data)
         if(end) {
           ended = end
-          console.log('END')
           return buffer !== null ? parse(cb) : cb(ended)
         }
         if(!buffer) {
@@ -56,6 +49,17 @@ exports.decode = function (codec) {
         if(!parse(cb)) read(null, next)
       })
 
+    }
+  }
+}
+
+exports.encode = function (codec) {
+  return function (read) {
+    return function (abort, cb) {
+      read(abort, function (end, data) {
+        if(end) cb(end)
+        else    cb(null, codec.encode(data))
+      })
     }
   }
 }
