@@ -3,7 +3,9 @@ var crypto = require('crypto')
 
 var pull = require('pull-stream')
 var tape = require('tape')
-var decode = require('../').decode
+var pv = require('../')
+var decode = pv.decode
+var encode = pv.encode
 
 var varstruct = require('varstruct')
 
@@ -57,7 +59,7 @@ function readRandom () {
 tape('simple', function (t) {
 
   pull(
-    pull.count(1),
+    pull.count(100),
     pull.map(random),
     pull.collect(function (err, ary) {
       var buffer = Buffer.concat(ary.map(function (v) {
@@ -80,3 +82,26 @@ tape('simple', function (t) {
   )
 
 })
+
+
+tape('simple', function (t) {
+
+  var ary = []
+
+  pull(
+    pull.count(100),
+    pull.map(random),
+    pull.through(function (v) { ary.push(v) }),
+    encode(struct),
+    readRandom(),
+    decode(struct),
+    pull.collect(function (err, _ary) {
+      console.log(_ary)
+      t.deepEqual(_ary, ary)
+      t.end()
+    })
+  )
+
+})
+
+
