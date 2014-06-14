@@ -4,19 +4,23 @@ exports.decode = function (codec) {
   var buffer = null, offset = 0, ended = null
 
   function parse (cb) {
-    var val
+    var val, bytes = 0
     if(!buffer || offset >= buffer.length)
       return false
 
-    try {
-      val = codec.decode(buffer, offset)
-      offset += codec.decode.bytesRead
-      if(offset >= buffer.length) {
-        buffer = null
-        offset = 0
-      }
-    } catch (err) {
-      if(ended) return cb(err)
+
+    val = codec.decode(buffer, offset)
+    bytes = codec.decode.bytesRead
+
+    if(bytes !== 0) {
+      offset += bytes
+        if(offset === buffer.length) {
+          buffer = null
+          offset = 0
+        }
+    }
+    else {
+      if(ended) return cb(new Error('Unexpected End of Stream'))
       return false
     }
     cb(null, val)
