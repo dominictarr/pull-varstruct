@@ -26,35 +26,7 @@ function random () {
     length: l
   }
 }
-
-function readRandom () {
-  var buffer, ended
-  return function (read) {
-    return function (abort, cb) {
-      if(abort) return read(abort, cb)
-      if(ended) return cb(ended)
-      read(null, function (end, data) {
-        if(end) {
-          ended = end
-          if(buffer.length)
-            return cb(null, buffer)
-          return cb(ended)
-        }
-        //copy twice, this isn't efficient,
-        //but this is just for testing.
-        if(buffer)
-          buffer = Buffer.concat([buffer, data])
-        else
-          buffer = data
-
-        var offset =  ~~(Math.random() * buffer.length)
-        data = buffer.slice(0, offset)
-        buffer = buffer.slice(offset)
-        cb(null, data)
-      })
-    }
-  }
-}
+var readRandomly = require('pull-randomly-split')
 
 tape('simple', function (t) {
 
