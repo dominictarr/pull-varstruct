@@ -8,16 +8,15 @@ exports.decode = function (codec) {
     if(!buffer || offset >= buffer.length)
       return false
 
-
     val = codec.decode(buffer, offset)
     bytes = codec.decode.bytesRead
 
     if(bytes !== 0) {
       offset += bytes
-        if(offset === buffer.length) {
-          buffer = null
-          offset = 0
-        }
+      if(offset === buffer.length) {
+        buffer = null
+        offset = 0
+      }
     }
     else {
       if(ended) return cb(new Error('Unexpected End of Stream'))
