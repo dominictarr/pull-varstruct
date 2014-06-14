@@ -56,7 +56,7 @@ tape('simple', function (t) {
 })
 
 
-tape('simple', function (t) {
+tape('simple - with fuzz', function (t) {
 
   var ary = []
 
@@ -65,7 +65,7 @@ tape('simple', function (t) {
     pull.map(random),
     pull.through(function (v) { ary.push(v) }),
     encode(struct),
-    readRandom(),
+    readRandomly(16, 64),
     decode(struct),
     pull.collect(function (err, _ary) {
       console.log(_ary)
