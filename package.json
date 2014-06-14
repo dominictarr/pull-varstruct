@@ -8,9 +8,9 @@
     "url": "git://github.com/dominictarr/pull-varstruct.git"
   },
   "dependencies": {
-    "varstruct": "~2.1.0"
   },
   "devDependencies": {
+    "varstruct": "~3.0.1",
     "pull-stream": "~2.23.0",
     "tape": "~2.13.1"
   },
