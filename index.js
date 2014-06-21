@@ -9,7 +9,7 @@ exports.decode = function (codec) {
       return false
 
     val = codec.decode(buffer, offset)
-    bytes = codec.decode.bytesRead
+    bytes = codec.decode.bytes
 
     if(bytes !== 0) {
       offset += bytes
