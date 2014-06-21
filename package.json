@@ -9,7 +9,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "varstruct": "~3.0.1",
+    "varstruct": "~4.0.0",
     "pull-stream": "~2.23.0",
     "tape": "~2.13.1",
     "pull-randomly-split": "~1.0.1"
