@@ -1,5 +1,4 @@
 
-
 exports.decode = function (codec) {
   var buffer = null, offset = 0, ended = null
 
@@ -66,3 +65,11 @@ exports.encode = function (codec) {
     }
   }
 }
+
+exports.duplex = function (stream, codec) {
+  return {
+    source: pull(stream.source, exports.encode(codec)),
+    sink: pull(exports.decode(codec), stream.sink))
+  }
+}
+
