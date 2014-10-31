@@ -1,5 +1,17 @@
+exports = module.exports = duplex
 
-exports.decode = function (codec) {
+exports.decode = decode
+exports.encode = encode
+exports.duplex = duplex
+
+function duplex (stream, codec) {
+  return {
+    source: pull(stream.source, encode(codec)),
+    sink: pull(decode(codec), stream.sink)
+  }
+}
+
+function decode (codec) {
   var buffer = null, offset = 0, ended = null
 
   function parse (cb) {
@@ -55,7 +67,7 @@ exports.decode = function (codec) {
   }
 }
 
-exports.encode = function (codec) {
+function encode (codec) {
   return function (read) {
     return function (abort, cb) {
       read(abort, function (end, data) {
@@ -63,13 +75,6 @@ exports.encode = function (codec) {
         else    cb(null, codec.encode(data))
       })
     }
-  }
-}
-
-exports.duplex = function (stream, codec) {
-  return {
-    source: pull(stream.source, exports.encode(codec)),
-    sink: pull(exports.decode(codec), stream.sink))
   }
 }
 
