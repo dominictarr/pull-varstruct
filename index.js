@@ -1,3 +1,5 @@
+var pull = require('pull-stream')
+
 exports = module.exports = duplex
 
 exports.decode = decode
