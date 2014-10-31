@@ -24,6 +24,12 @@ function serialize(duplex) {
 
 ## api
 
+
+### pv(stream, codec)
+
+take a duplex object stream and return an binary duplex stream, encoded/decoded
+with `codec`.
+
 ### pv.encode(codec)
 
 transform stream that takes an object stream and outputs a binary stream.
@@ -32,10 +38,6 @@ transform stream that takes an object stream and outputs a binary stream.
 
 transform stream that takes a binary stream and outputs an object stream.
 
-### pv.duplex(stream, codec)
-
-take a duplex object stream and return an binary duplex stream, encoded/decoded
-with `codec`.
 
 ## License
 
