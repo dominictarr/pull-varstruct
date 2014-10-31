@@ -1,5 +1,6 @@
 
 var crypto = require('crypto')
+var readRandomly = require('pull-randomly-split')
 
 var pull = require('pull-stream')
 var tape = require('tape')
@@ -26,7 +27,6 @@ function random () {
     length: l
   }
 }
-var readRandomly = require('pull-randomly-split')
 
 tape('simple', function (t) {
 
@@ -65,7 +65,7 @@ tape('simple - with fuzz', function (t) {
     pull.map(random),
     pull.through(function (v) { ary.push(v) }),
     encode(struct),
-    readRandomly(16, 64),
+    readRandomly(0, 64),
     decode(struct),
     pull.collect(function (err, _ary) {
       console.log(_ary)
